@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Secure Coding Dojo</title>
+
+    <script src="public/jquery/dist/jquery.min.js"></script>
+    <script src="public/angular/angular.min.js"></script>
+    <script src="public/angular-route/angular-route.min.js"></script>
+    <script src="public/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="public/highlightjs/highlight.pack.min.js"></script>
+    <script src="public/canvas-confetti/dist/confetti.browser.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css"
+    />
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.min.js"></script> -->
+    <script src="static/main-app.js"></script>
+    <script src="static/dataSvc.js"></script>
+
+    <script src="static/challengesCtrl.js"></script>
+    <script src="static/leaderboardCtrl.js"></script>
+    <script src="static/submitCodeCtrl.js"></script>
+    <script src="static/codeBlocksCtrl.js"></script>
+    <script src="static/activityCtrl.js"></script>
+    <script src="static/dashboardCtrl.js"></script>
+    <script src="static/reportCtrl.js"></script>
+    <script src="static/solutionCtrl.js"></script>
+    <script src="static/trainingModulesCtrl.js"></script>
+
+    <script src="/public/jquery/dist/jquery.min.js"></script>
+    <script src="/public/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/public/angular/angular.min.js"></script>
+    <link
+      href="/public/bootstrap/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/public/open-iconic/font/css/open-iconic-bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="/public/bootstrap/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/public/open-iconic/font/css/open-iconic-bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="/public/highlightjs/styles/darkula.css" rel="stylesheet" />
+
+    <script>
+      window.localStorage.setItem("XSRF_TOKEN", "%XSRF_TOKEN%");
+      window.getAjaxOpts = function () {
+        var opts = {
+          headers: {
+            xsrfToken: window.localStorage.getItem("XSRF_TOKEN"),
+          },
+        };
+        return opts;
+      };
+    </script>
+  </head>
+  <body>
+    <div ng-app="challengesApp" ng-controller="mainCtrl">
+      <!-- <div> -->
+      <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="#!">Secure Coding Dojo</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav mr-auto">
+            <li class="navbar-item" ng-class="{ active: isActive('/')}">
+              <a class="nav-link" href="#!">Lessons</a>
+            </li>
+            <li
+              class="navbar-item"
+              ng-class="{ active: isActive('/codeBlocks')}"
+            >
+              <a class="nav-link" href="#!codeBlocks/inputAllowListing"
+                >Code Blocks</a
+              >
+            </li>
+            <li
+              class="navbar-item"
+              ng-class="{ active: isActive('/leaderboard')}"
+            >
+              <a class="nav-link" href="#!leaderboard">Team Results</a>
+            </li>
+            <li class="navbar-item" ng-class="{ active: isActive('/activity')}">
+              <a class="nav-link" href="#!activity">Activity</a>
+            </li>
+            <li
+              class="navbar-item"
+              ng-class="{ active: isActive('/dashboard')}"
+            >
+              <a class="nav-link" href="#!dashboard">Dashboard</a>
+            </li>
+            <li class="navbar-item" ng-class="{ active: isActive('/report')}">
+              <a class="nav-link" href="#!report">Report</a>
+            </li>
+            <li class="navbar-item">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-toggle="modal"
+                data-target="#HideshowModal"
+                ng-click="getmystudents()"
+              >
+                Hide/show
+              </button>
+            </li>
+          </ul>
+
+          <ul class="navbar-nav">
+            <li class="navbar-item">
+              <a
+                class="nav-link"
+                href=""
+                data-toggle="modal"
+                data-target="#teamModal"
+                >My Team</a
+              >
+            </li>
+            <li
+              class="navbar-item"
+              ng-if="user.accountId.indexOf('Local_')===0"
+            >
+              <a
+                class="nav-link"
+                href=""
+                data-toggle="modal"
+                data-target="#profileModal"
+                >My Profile</a
+              >
+            </li>
+            <li class="navbar-item">
+              <a class="nav-link" href="/logout"
+                ><span class="oi oi-account-logout"></span>
+                Logout{{fullName}}</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div
+        class="alert alert-warning"
+        id="teamAlert"
+        ng-if="user.teamId==null || user.teamId==0"
+      >
+        <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        You have not joined a team yet!
+        <a
+          href="#"
+          class="alert-link"
+          data-toggle="modal"
+          data-target="#teamModal"
+          >Join an existing team or create a team for yourself.</a
+        >
+      </div>
+
+      <div
+        class="alert alert-info"
+        id="activityAlert"
+        ng-if="showActivityMessage"
+      >
+        <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <b>Last activity:</b> {{latestActivityMessage}}
+      </div>
+
+      <!-- This is where the main view goes -->
+      <div style="margin: 20px" ng-view></div>
+
+      <!-- Team configuration -->
+      <div id="teamModal" class="modal fade" role="dialog">
+        <div class="modal-dialog" role="document">
+          <!-- Team configuration UI -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Team Selection</h4>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="editContainer" ng-if="ownedTeam==null">
+                <form autocomplete="off">
+                  <label for="userTeamListChoice">Pick an existing team:</label>
+                  <input
+                    list="userTeamList"
+                    id="userTeamListChoice"
+                    name="userTeamListChoice"
+                    class="custom-select"
+                    ng-model="userTeamListChoice"
+                    ng-change="onUserTeamChange()"
+                    placeholder="Start typing to search existing teams."
+                  />
+                  <datalist id="userTeamList">
+                    <option ng-repeat="team in teamList" value="{{$index}}">
+                      {{team.name}}
+                    </option>
+                  </datalist>
+
+                  <br /><br />
+                  <label for="newTeamName">Create new team:</label>
+                  <input type="text" class="form-control" id="newTeamName" />
+                </form>
+              </div>
+              <div id="ownerContainer" ng-if="ownedTeam!=null">
+                <p>
+                  You manage the team <strong>'{{ownedTeam.name}}'</strong>
+                  <a href="#" ng-click="deleteOwnedTeam()">
+                    <span class="oi oi-trash"></span>
+                  </a>
+                </p>
+              </div>
+            </div>
+            <div
+              class="alert alert-danger"
+              id="teamErrorMessage"
+              ng-if="isTeamSaveError"
+            >
+              <button
+                type="button"
+                class="close"
+                ng-click="hideTeamSaveError()"
+              >
+                &times;
+              </button>
+              {{teamSaveErrorMessage}}
+            </div>
+            <div
+              class="alert alert-success"
+              id="teamSuccessMessage"
+              ng-if="isTeamSaveSuccess"
+            >
+              <button
+                type="button"
+                class="close"
+                ng-click="hideTeamSaveSuccess()"
+              >
+                &times;
+              </button>
+              {{teamSaveSuccessMessage}}
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                ng-click="saveTeamSettings()"
+                ng-if="ownedTeam==null"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                ng-click="hideMessages()"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile configuration -->
+      <div id="profileModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Profile configuration UI -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">User Profile</h4>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="currentPassword">Current Password:</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="currentPassword"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="newPassword">New Password:</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="newPassword"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="vfyPassword">Verify password:</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="vfyPassword"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <div
+              class="alert alert-danger"
+              id="teamErrorMessage"
+              ng-if="isProfileSaveError"
+            >
+              <button
+                type="button"
+                class="close"
+                ng-click="hideProfileSaveError()"
+              >
+                &times;
+              </button>
+              {{profileSaveErrorMessage}}
+            </div>
+            <div
+              class="alert alert-success"
+              id="teamSuccessMessage"
+              ng-if="isProfileSaveSuccess"
+            >
+              <button
+                type="button"
+                class="close"
+                ng-click="hideProfileSaveSuccess()"
+              >
+                &times;
+              </button>
+              {{profileSaveSuccessMessage}}
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                ng-click="updateLocalUser()"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br /><br /><br /><br />
+
+      <div
+        id="HideshowModal"
+        class="modal fade"
+        role="dialog"
+        ng-show="IsVisible"
+      >
+        <h2>List of Students</h2>
+
+        <ul>
+          <li ng-repeat="user in users">
+            {{ user.givenName }} {{ user.familyName }}
+            <button
+              type="button"
+              class="btn btn-primary"
+              ng-click="showchallenges(user.accountId)"
+              data-toggle="modal"
+              data-target="#userdetails"
+            >
+              Edit the visibility of the solutions
+            </button>
+            <br /><br />
+          </li>
+        </ul>
+      </div>
+
+      <div id="userdetails" class="modal fade" role="dialog">
+        <h2>List of challenges</h2>
+        <!-- <button
+          class="btn btn-primary"
+          type="button"
+          ng-click="showchallenges()"
+          
+        >
+          Fetch challenges
+        </button> -->
+        <ul>
+          <li ng-repeat="challenge in challengess">
+            {{ challenge.name }}
+            <ul>
+              <li ng-repeat="challengename in challenge.challenges">
+                {{ challengename.name }}
+                <input
+                  type="checkbox"
+                  id="{{ challengename.id }}"
+                  name="{{ challengename.id }}"
+                  value="{{ challengename.id }}"
+                />
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <button
+          type="button"
+          class="btn btn-primary"
+          ng-click="submitchallengesnames()"
+          data-toggle="modal"
+        >
+          submit
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

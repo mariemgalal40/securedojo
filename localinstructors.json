@@ -1,0 +1,51 @@
+{
+	"adminaaaaaaaaaa": {
+		"givenName": "mariemmm",
+		"familyName": "ffffffffffff",
+		"passSalt": "NZ9F8mpQLJ11nfrBOg3t7Q==",
+		"passHash": "hruSTzR4FszydmzphhMBYir+CVWPbZ9Gh6KoilEFHmhjmiPOvRD7yGERgTK6idjSqCRJpROPmHFKnPHYHUupNQ=="
+	},
+	"adminzz": {
+		"givenName": "mariemmm",
+		"familyName": "ffffffffffff",
+		"passSalt": "AcX+iLUszIyyKhMzvEdDIg==",
+		"passHash": "/W0Fb7UvTBxVHNWvNfiqXS1UvM/7CWIQtUqpJFHDD/Yga/e/A9X5EcqWR4I4/y49/VupMwoszCouTcmfDmucyg==",
+		"choice": "instructor"
+	},
+	"adminf": {
+		"givenName": "trytry",
+		"familyName": "admin",
+		"passSalt": "Hn5UoAM8ZvP80x3xQ8ycFA==",
+		"passHash": "QK5cfZBMOXs0LYE62eEHi4Ps0Z+qyHbld+FYrC7b/L+NMpeKDpwj2+tmjPw6YViTLrdTfmjv1cICQebgHrvg7w=="
+	},
+	"aaa": {
+		"givenName": "trytry",
+		"familyName": "admin",
+		"passSalt": "Hn5UoAM8ZvP80x3xQ8ycFA==",
+		"passHash": "QK5cfZBMOXs0LYE62eEHi4Ps0Z+qyHbld+FYrC7b/L+NMpeKDpwj2+tmjPw6YViTLrdTfmjv1cICQebgHrvg7w==",
+		"choice": "instructor"
+	},
+	"aaal": {
+		"givenName": "trytry",
+		"familyName": "admin",
+		"passSalt": "Hn5UoAM8ZvP80x3xQ8ycFA==",
+		"passHash": "QK5cfZBMOXs0LYE62eEHi4Ps0Z+qyHbld+FYrC7b/L+NMpeKDpwj2+tmjPw6YViTLrdTfmjv1cICQebgHrvg7w==",
+		"choice": "instructor"
+	},
+	"ints2": {
+		"givenName": "inst",
+		"familyName": "zzzzzzzzzz",
+		"passSalt": "XQQftKyi8hY4HbTkxeZTZg==",
+		"passHash": "iHwBuiNBItsmBZFbcaOgM/sNVwFxqh1n4a5ywLClnuGg1vCaqfYUuuo2EM/3M/LdlIfVVJudYanSKZAfQVFoPA==",
+		"code": "asoo",
+		"choice": "instructor"
+	},
+	"ins": {
+		"givenName": "mariemmm",
+		"familyName": "qq",
+		"passSalt": "+35exuzmfi6BV8B9zPCAfA==",
+		"passHash": "u5RT1jT+I1BkCU0J2kuCIsTBPiLDGlQGVQMFRBsTkdgbz5+1nGPizYD8yXfdY1Em3x7EqldUNzpmDcy2eY4dGA==",
+		"code": "qqqqqqqq",
+		"choice": "instructor"
+	}
+}

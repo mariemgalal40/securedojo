@@ -1,0 +1,277 @@
+[
+    {
+        "level":0,
+        "name":"White Belt",
+        "challenges":[]
+    },
+    {
+        "level":1,
+        "name":"Yellow Belt",
+        "badgrInfo":
+        {
+            "issuer":"Insert <issuer id> from https://badgr.io/issuer/issuers/<issuer id>",
+            "badge_class":"Insert <badge class id> from https://badgr.io/issuer/issuers/<issuer id>/badges/<badge id>",
+            "recipient_type":"email",
+            "recipient_identifier":"",
+            "narrative":"Badge issued for completing the Secure Coding Dojo:Yellow Belt.",
+            "create_notification":true,
+            "evidence_items":[]
+        },
+        "challenges":[
+            {
+                "id":"cwe807",
+                "name":"Reliance on Untrusted Inputs in a Security Decision", 
+                "description": "cwe807.html",
+                "attackGram":"reliance.png",
+                "solution":"cwe807.sol.md",
+                "playLink":"/ch2.jsp",
+                "mission":"Access the admin page from the account of the 'demo' user.",
+                "codeBlockIds":["serverSideValidation"]
+            },
+            {
+                "id":"cwe862",
+                "name":"Missing Authorization", 
+                "description": "cwe862.html",
+                "attackGram":"missingauthz.png",
+                "solution":"cwe862.sol.md",
+                "playLink":"/cwe862.jsp",
+                "mission":"Access the admin page from the account of the 'demo' user.",
+                "codeBlockIds":["resourceSeparation"]
+            },
+            {
+                "id":"cwe306",
+                "name":"Missing Authentication for Critical Function",
+                "description": "cwe306.md",
+                "attackGram":"authbypass.png",
+                "solution":"cwe306.sol.md",
+                "playLink":"/ch1.jsp",
+                "codeBlockIds":["authenticationByDefault"],
+                "mission":"Access the admin page for this challenge without knowing any password.",
+                "badgrInfo":{
+                    "issuer":"Insert <issuer id> from https://badgr.io/issuer/issuers/<issuer id>",
+                    "badge_class":"Insert <badge class id> from https://badgr.io/issuer/issuers/<issuer id>/badges/<badge id>",
+                    "recipient_type":"email",
+                    "recipient_identifier":"",
+                    "narrative":"Badge issued for completing the Secure Coding Dojo:Yellow Belt:Missing Authentication for Critical Function.",
+                    "create_notification":true,
+                    "evidence_items":[]
+                }
+            }
+        ]
+    },
+    {
+        "level":2,
+        "name":"Orange Belt",
+        "challenges":[
+            {
+                "id":"cwe311",
+                "name":"Missing Encryption of Sensitive Data", 
+                "description": "cwe311.html",
+                "attackGram":"missingenc.png",
+                "solution":"cwe311.sol.md",
+                "playLink":"/cwe311.jsp",
+                "codeBlockIds":["useStrongDataEncryption"]
+            },
+            {
+                "id":"cwe327",
+                "name":"Use of a Broken or Risky Cryptographic Algorithm", 
+                "description": "cwe327.html",
+                "attackGram":"brokencrypto.png",
+                "solution":"cwe327.sol.md",
+                "playLink":"/cwe327.jsp",
+                "codeBlockIds":["useStrongDataEncryption"]
+            },
+            {
+                "id":"cwe759",
+                "name":"Use of a One-Way Hash without a Salt", 
+                "description": "cwe759.html",
+                "attackGram":"unsaltedhash.png",
+                "solution":"cwe759.sol.md",
+                "playLink":"/cwe759.jsp",
+                "codeBlockIds":["useStrongDataEncryption"]
+            }  
+        ]
+    },
+    {
+        "level":3,
+        "name":"Green Belt",
+        "challenges":[
+            {
+                "id":"cwe307",
+                "name":"Password Guessing Attack", 
+                "description": "cwe307.html",
+                "attackGram":"passguessing.png",
+                "solution":"cwe307.sol.md",
+                "playLink":"/cwe307.jsp",
+                "codeBlockIds":["loginBestPractices"]
+            },
+            {
+                "id":"cwe190",
+                "name":"Integer Overflow or Wraparound", 
+                "description": "cwe190.html",
+                "attackGram":"intoverflow.png",
+                "solution":"cwe190.sol.md",
+                "playLink":"/cwe190.jsp",
+                "codeBlockIds":["checkBoundaries"]
+            },
+            {
+                "id":"cwe494",
+                "name":"Download of Code Without Integrity Check", 
+                "attackGram":"downloadnocheck.png",
+                "description": "cwe494.html",
+                "solution":"cwe494.sol.md",
+                "playLink":"/cwe494.jsp",
+                "codeBlockIds":["integrityVerification","useStrongDataEncryption"]
+            }
+        ]
+    },
+    {
+        "level":4,
+        "name":"Purple Belt",
+        "challenges":[
+            {
+                "id":"cwe601",
+                "name":"URL Redirection to Untrusted Site ('Open Redirect')", 
+                "description": "cwe601.html",
+                "attackGram":"openredirect.png",
+                "solution":"cwe601.sol.md",
+                "playLink":"/cwe601.jsp",
+                "codeBlockIds":["inputAllowListing","indirectObjectReferences"]
+            },
+            {
+                "id":"cwe79",
+                "name":"Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting') and related flaws", 
+                "description": "cwe79.html",
+                "attackGram":"xss.png",
+                "solution":"cwe79.sol.md",
+                "playLink":"/cwe79.jsp",
+                "codeBlockIds":["neutralizeOutput","inputAllowListing","requestForgeryPrevention"]
+            },
+            {
+                "id":"cwe352",
+                "name":"Cross-Site Request Forgery (CSRF)", 
+                "description": "cwe352.html",
+                "attackGram":"csrf.png",
+                "solution":"cwe352.sol.md",
+                "playLink":"/cwe352.jsp",
+                "codeBlockIds":["requestForgeryPrevention"]
+            }
+        ]
+    },
+    {
+        "level":5,
+        "name":"Blue Belt",
+        "challenges":[
+            {
+                "id":"cwe434",
+                "name":"Unrestricted Upload of File with Dangerous Type",
+                "attackGram":"dangerousfileupload.png",
+                "solution":"cwe434.sol.md",
+                "playLink":"/cwe434.jsp",
+                "description": "cwe434.html",
+                "codeBlockIds":["indirectObjectReferences","inputAllowListing","principleOfLeastPrivilege"]
+            },
+            {
+                "id":"cwe611",
+                "name":"Improper Restriction of XML External Entity Reference ('XXE')",
+                "attackGram":"xxe.png",
+                "solution":"cwe611.sol.md",
+                "playLink":"/cwe611.jsp",
+                "description": "cwe611.html",
+                "codeBlockIds":["disableXmlExternalEntities","principleOfLeastPrivilege"]
+            },
+            {
+                "id":"cwe22",
+                "name":"Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+                "attackGram":"pathtraversal.png",
+                "solution":"cwe22.sol.md",
+                "playLink":"/cwe22.jsp",
+                "description": "cwe22.html",
+                "codeBlockIds":["indirectObjectReferences","inputAllowListing","principleOfLeastPrivilege"]
+            }
+        ]
+    },
+    {
+        "level":6,
+        "name":"Brown Belt",
+        "challenges":[
+            {
+                "id":"cwe863",
+                "name":"Incorrect Authorization", 
+                "playLink":"/cwe863.jsp",
+                "description": "cwe863.html",
+                "attackGram":"missingauthz.png",
+                "solution":"cwe863.sol.md",
+                "codeBlockIds":["resourceSeparation","principleOfLeastPrivilege"]
+            },
+            {
+                "id":"cwe78",
+                "name":"Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection') and related flaws", 
+                "playLink":"/cwe78.jsp",
+                "description": "cwe78.html",
+                "attackGram":"commandinjection.png",
+                "solution":"cwe78.sol.md",
+                "codeBlockIds":["parameterizedCommands","inputAllowListing","principleOfLeastPrivilege"]
+            },
+            {
+                "id":"cwe89",
+                "name":"Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')", 
+                "playLink":"/cwe89.jsp",
+                "description": "cwe89.html",
+                "attackGram":"sqli.png",
+                "solution":"cwe89.sol.md",
+                "codeBlockIds":["parameterizedCommands", "displayGenericErrorMessages", "inputAllowListing"]
+            }
+        ]
+    },
+    {
+        "level":7,
+        "name":"Black Belt",
+        "badgrInfo":
+        {
+            "issuer":"JEzPNy2zSGG1XVTsJ5JE0g",
+            "badge_class":"AIMEaNOFQUeaiGZ7gC19FQ",
+            "recipient_type":"email",
+            "recipient_identifier":"",
+            "narrative":"Badge issued for completing the Secure Coding Dojo:First Degree Black Belt.",
+            "create_notification":true,
+            "evidence_items":[]
+        },
+        "challenges":[
+            {
+                "id":"cwe120",
+                "name":"Buffer Copy without Checking Size of Input ('Classic Buffer Overflow') and related flaws", 
+                "playLink":"/cwe120.jsp",
+                "description": "cwe120.html",
+                "attackGram":"bufferoverflow.png",
+                "solution":"cwe120.sol.md",
+                "codeBlockIds":["checkBoundaries","safeMemoryManagement","inputAllowListing"]
+            },
+            {
+                "id":"cwe134",
+                "name":"Use of Externally-Controlled Format String", 
+                "playLink":"/cwe134.jsp",
+                "description": "cwe134.html",
+                "attackGram":"formatstring.png",
+                "solution":"cwe134.sol.md",
+                "codeBlockIds":["safeMemoryManagement","inputAllowListing"]
+            },
+            {
+                "id":"cwe502",
+                "name":"Deserialization of Untrusted Data",
+                "playLink":"/cwe502.jsp",
+                "description": "cwe502.html",
+                "attackGram":"deserialization.png",
+                "solution":"cwe502.sol.md",
+                "codeBlockIds":["enforceSafeDeserialization"]
+            },
+            {
+                "id":"quiz",
+                "name":"Quiz", 
+                "playLink":"/quiz.jsp",
+                "description": "quiz.html",
+                "codeBlockIds":[]
+            }
+        ]
+    }
+]

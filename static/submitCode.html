@@ -1,0 +1,59 @@
+<div class="container" ng-app="challengesApp" ng-controller="submitCodeCtrl" data-ng-init="init()">
+    <div class="alert alert-danger" id="codeError" ng-if="isCodeErrorMessage">
+        <button type="button" class="close" ng-click="hideError()">&times;</button>
+        {{codeErrorMessage}}
+    </div>
+    <h4>When you have solved the challenge, take the salt below to obtain the verification code.</h4>
+    <br>
+    <form autocomplete="off">
+        <div class="form-group form-inline">
+            <label for="salt">Salt:</label> &nbsp;
+            <input type="text" autocomplete="off" class="form-control" id="saltEl" value="{{salt}}"/><button type="button" class="btn btn-default" onclick="document.getElementById('saltEl').select();document.execCommand('copy');">
+                    <span class="oi oi-clipboard"></span>
+        </div>
+        <div class="form-group ">
+            <label for="challengeCode">Challenge code:</label>        
+            <input type="text" autocomplete="off" class="form-control" id="challengeCode">  
+        </div>
+    </form>
+    <button class="btn btn-primary" ng-click="submitAnswer()">Submit</button>
+    <button class="btn btn-secondary" onclick="window.history.back()">Back</button>
+
+
+            <!-- Code Block Dialog -->
+            <div id="codeBlocksModal" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+
+                    <!-- Team configuration UI -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Challenge passed</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            
+                            <div class="alert alert-success" id="teamSuccessMessage" ng-if="isCodeSuccessMessage">
+                                {{codeSuccessMessage}}
+                            </div>
+                            
+                            <p ng-if="challengeCodeBlocks.length>0">Read about the secure coding best practices ('code blocks') that can prevent attackers from exploiting this type of security flaw.</p>
+                            
+                            <div class="pre-scrollable">
+                                <span ng-repeat="block in challengeCodeBlocks">
+                                    <h4>{{block.name}}</h4>
+                                    <div ng-include="block.description"></div>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+</div>
+

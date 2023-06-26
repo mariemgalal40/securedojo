@@ -1,0 +1,36 @@
+<div class="container" ng-app="challengesApp" ng-controller="leaderboardCtrl" ng-init="init()">   
+    <form autocomplete="off">
+        <label for="teamListChoice">Select a team to see member status: </label>
+        <select id="teamListChoice" name="teamListChoice"  ng-model="teamListChoice" class="form-select" aria-label="Team selector" ng-change="onTeamChange()">
+            <option ng-repeat="teamInfo in teamStatList" value="{{$index}}">{{teamInfo.teamName}} ({{teamInfo.playerCount}})</option>
+        </select>
+        <label for="teamListTimeRange">Select a time range:</label>
+        <select id="teamListTimeRange" ng-model="teamListTimeRange" name="teamListTimeRange" class="form-select" aria-label="Time range selector" ng-change="onTeamChange()">
+            <option value="-1" selected>All Time</option>
+            <option value="7">Last Week</option>
+            <option value="30">Last 30 Days</option>
+        </select>
+    </form>
+    <br>
+    <br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" ng-repeat="module in lbModules">{{module.name}} ({{module.percentageCompleted}}%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="col" ng-repeat="module in lbModules">
+                    <ol class="small">
+                        <li ng-repeat="user in module.members">
+                            {{user.givenName}} {{user.familyName}}
+                        </li>
+                    </ol>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+</div>

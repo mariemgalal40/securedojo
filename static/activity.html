@@ -1,0 +1,42 @@
+<div class="container-fluid">
+  <p>The table below lists the most recent participant activity.</p>
+  <form ng-submit="fetchActivity()">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filter by name"
+        id="nameFilter"
+        role="searchbox"
+      />
+      <div class="input-group-btn">
+        <button class="btn" ng-click="fetchActivity()" role="search">
+          <span class="oi oi-magnifying-glass"></span>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>User</th>
+        <th>Team</th>
+        <th>Challenge</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="activityEntry in activityList">
+        <td>{{toLocaleDate(activityEntry.timestamp)}}</td>
+        <td>{{activityEntry.accountId}} {{activityEntry.familyName}}</td>
+        <!-- <td>{{activityEntry.accountId}}</td> -->
+
+        <td>{{teamNames[activityEntry.teamId]}}</td>
+        <td>{{activityEntry.challengeName}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <br />
+</div>

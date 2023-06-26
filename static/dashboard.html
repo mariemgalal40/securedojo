@@ -1,0 +1,59 @@
+<div class="container-fluid" ng-app="challengesApp" ng-controller="dashboardCtrl" data-ng-init="init()">
+    <table><tr valign="top">
+    <td style="padding:5px;width:50%">
+        <h3>Lessons</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Lesson Name</th>
+                <th>Achieved</th>
+    
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="challengeStat in challengeStatList">
+                    <td>{{challengeStat.challengeName}}</td>
+                    <td>{{challengeStat.achieved}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
+    <td style="padding:5px;width:50%">
+        <h3>Modules</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Module Name</th>
+                <th>Player Count</th>
+    
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="moduleStat in moduleStatList">
+                    <td style="width:75%">{{modules[moduleStat.moduleId].name}}</td>
+                    <td>{{moduleStat.playerCount}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Teams</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Team Name</th>
+                <th>Member Count</th>
+    
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="teamStat in teamStatList">
+                    <td style="width:75%">{{teamStat.teamName}}</td>
+                    <td>{{teamStat.playerCount}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
+    </tr></table>
+    <br>
+    <br>
+</div>
