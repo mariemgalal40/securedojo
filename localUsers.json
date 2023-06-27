@@ -1,0 +1,26 @@
+{
+	"admin": {
+		"givenName": "admin",
+		"familyName": "admin",
+		"passSalt": "PkPmk82tuDyoxBIAI9ZLUw==",
+		"passHash": "ujPMk627LzOhw6noVotXAhaRTFdt64Dlajg7oQu2FAKYK41M9AYftaUa5LCB98CKb0UUhjDlZVzJk8puic9oEQ==",
+		"code": "asoo",
+		"choice": "student"
+	},
+	"mariem": {
+		"givenName": "mariemmm",
+		"familyName": "qq",
+		"passSalt": "A7zebNqV+UmbYglqIS5U6Q==",
+		"passHash": "yc/ZL0Ujc6L7DDUZ6rXeTJTT7xjOOz0347+MHlwwFVSTTyzuTHvHw0CjzeukXf7irmXWRWRum5+NNulPYJ/zrg==",
+		"code": "asoo",
+		"choice": "student"
+	},
+	"stu": {
+		"givenName": "trytry",
+		"familyName": "qq",
+		"passSalt": "b5PyukpDnUcUQUoiRCxI7A==",
+		"passHash": "E5HiGWIFUdDv4bAKQUCySVs/HLs1pO/eQexrAICTO8prnb5etk1lo5EpylnnCHbOGDbEUcKYrZT/hdvTCYMC2A==",
+		"code": "asoo",
+		"choice": "student"
+	}
+}
