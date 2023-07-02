@@ -198,7 +198,7 @@ let registerLocalUser = function (req, res) {
 
   var localUser = { givenName: givenName, familyName: familyName };
   var choice = newUser.choice;
-  createUpdateUser(req, res, username, localUser, password, choice);
+  createUpdateUser(req, res, username, localUser, password, choice, code);
 };
 
 let registerinstructor = function (req, res) {
@@ -277,8 +277,8 @@ let registerinstructor = function (req, res) {
     username,
     localinstructor,
     password,
-
-    choice
+    choice,
+    code
   );
 };
 
@@ -286,8 +286,8 @@ let createUpdateUserInternal = (
   username,
   localUser,
   password,
-
-  choice
+  choice,
+  code
 ) => {
   //create user
   localUser.passSalt = crypto.randomBytes(16).toString("base64").toString();
@@ -295,6 +295,7 @@ let createUpdateUserInternal = (
 
   localUsers[username] = localUser;
   localUser.choice = choice;
+  localUser.code = code;
   //save to disk
   var json = JSON.stringify(localUsers, null, "\t");
   fs.writeFileSync(localUsersPath, json, "utf8");
@@ -304,8 +305,9 @@ let createUpdateinstructorInternal = (
   username,
   localinstructor,
   password,
-  code,
-  choice
+
+  choice,
+  code
 ) => {
   //create user
   localinstructor.passSalt = crypto
@@ -318,8 +320,9 @@ let createUpdateinstructorInternal = (
   );
 
   localinstructors[username] = localinstructor;
-  localinstructor.code = code;
   localinstructor.choice = choice;
+  localinstructor.code = code;
+  
   //save to disk
   var json = JSON.stringify(localinstructors, null, "\t");
   fs.writeFileSync(localinstructorsPath, json, "utf8");
@@ -331,7 +334,8 @@ let createUpdateUser = function (
   username,
   localUser,
   password,
-  choice
+  choice,
+  code
 ) {
   var isStrongPass =
     validator.matches(password, /.{16,}/) == true &&
@@ -346,7 +350,7 @@ let createUpdateUser = function (
     );
   }
 
-  createUpdateUserInternal(username, localUser, password, choice);
+  createUpdateUserInternal(username, localUser, password, choice, code);
 
   return util.apiResponse(req, res, 200, "User created/modified.");
 };
@@ -357,8 +361,8 @@ let createUpdateinstructor = function (
   username,
   localinstructor,
   password,
-
-  choice
+  choice,
+  code
 ) {
   var isStrongPass =
     validator.matches(password, /.{16,}/) == true &&
@@ -376,8 +380,8 @@ let createUpdateinstructor = function (
     username,
     localinstructor,
     password,
-    
-    choice
+    choice,
+    code
   );
   return util.apiResponse(req, res, 200, "User created/modified.");
 };
@@ -391,7 +395,7 @@ let verifyLocalUserPassword = function (username, password, choice) {
   if (username in localUsers) {
     var user = localUsers[username];
     var saltString = user.passSalt;
-    // choice = "student";
+    choice = "student";
 
     var passwordHash = util.hashPassword(password, saltString);
     if (user.passHash === passwordHash) {
@@ -415,7 +419,7 @@ let verifyLocalinstructorPassword = function (username, password, choice) {
   if (username in localinstructors) {
     var user = localinstructors[username];
     var saltString = user.passSalt;
-    // choice = "instructor";
+    choice = "instructor";
     console.log("ins");
     var passwordHash = util.hashPassword(password, saltString);
     if (user.passHash === passwordHash) {
@@ -452,6 +456,7 @@ let updateLocalUser = function (req, res) {
   var username = req.user.accountId.substring("Local_".length);
   var localUser = localUsers[username];
   var choice = req.user.choice;
+  var code = req.user.code;
 
   if (util.isNullOrUndefined(localUser)) {
     return util.apiResponse(req, res, 400, "Current user not in local users");
@@ -499,7 +504,7 @@ let updateLocalUser = function (req, res) {
     );
   }
 
-  createUpdateUser(req, res, username, localUser, newPassword, choice);
+  createUpdateUser(req, res, username, localUser, newPassword, choice, code);
 };
 
 let updateLocalinstructor = function (req, res) {
@@ -524,6 +529,7 @@ let updateLocalinstructor = function (req, res) {
   var username = req.user.accountId.substring("Local_".length);
   var localinstructor = localinstructors[username];
   var choice = req.user.choice;
+  var code = req.user.code;
 
   if (util.isNullOrUndefined(localinstructor)) {
     return util.apiResponse(req, res, 400, "Current user not in local users");
@@ -571,15 +577,23 @@ let updateLocalinstructor = function (req, res) {
     );
   }
 
-  createUpdateinstructor(req, res, username, localinstructor, newPassword);
+  createUpdateinstructor(
+    req,
+    res,
+    username,
+    localinstructor,
+    newPassword,
+    choice,
+    code
+  );
 };
 
 let processAuthCallback = async (
   profileId,
   givenName,
   familyName,
-  code,
   choice,
+  code,
   x,
   email,
   cb
@@ -635,8 +649,9 @@ let processAuthCallback = async (
             accountId: profileId,
             familyName: familyName,
             givenName: givenName,
-            code: code,
             choice: choice,
+            code: code,
+            
             teamId: teamId,
             level: 0,
           };
@@ -691,8 +706,9 @@ let processAuthCallback = async (
             accountId: profileId,
             familyName: familyName,
             givenName: givenName,
-            code: code,
             choice: choice,
+            code: code,
+            
             teamId: teamId,
             level: 0,
           };
@@ -722,8 +738,9 @@ let getLocalStrategy = function (verifyPasswordFunction, x) {
         "Local_" + username,
         user.givenName,
         user.familyName,
-        user.code,
         user.choice,
+        user.code,
+        
         x,
         null,
         cb
