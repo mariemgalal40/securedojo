@@ -354,6 +354,45 @@ app.controller("mainCtrl", [
         );
     };
 
+    $scope.updateLocalinstructor = function () {
+      $scope.isProfileSaveError = false;
+      $scope.isProfileSaveSuccess = false;
+      $scope.profileSaveErrorMessage = "";
+      var profileInfo = {};
+      profileInfo.curPassword = currentPassword.value.trim();
+      profileInfo.newPassword = newPassword.value.trim();
+
+      if (vfyPassword.value.trim() !== profileInfo.newPassword) {
+        $scope.isProfileSaveError = true;
+        $scope.profileSaveErrorMessage =
+          "New password and verification password do not match";
+        return;
+      }
+      $http
+        .post(
+          "/api/localinstructor/updateinstructor",
+          { profileInfo: profileInfo },
+          window.getAjaxOpts()
+        )
+        .then(
+          function (response) {
+            if (response !== null && response.data !== null) {
+              if (response.data.status == 200) {
+                $scope.isProfileSaveSuccess = true;
+                $scope.profileSaveSuccessMessage = "instructor updated.";
+              } else {
+                $scope.isProfileSaveError = true;
+                $scope.profileSaveErrorMessage = response.data.statusMessage;
+              }
+            }
+          },
+          function (errorResponse) {
+            $scope.isProfileSaveError = true;
+            $scope.profileSaveErrorMessage = "A http error has occurred.";
+          }
+        );
+    };
+
     $scope.loadData = function () {
       $http.get("/api/user", window.getAjaxOpts()).then(function (response) {
         if (response != null && response.data != null) {
@@ -452,7 +491,6 @@ app.controller("mainCtrl", [
 
       //client checks are fine proceed with the server checks
       $http.post("/puplic/instructorregister", { newUser: newUser }).then(
-
         function (response) {
           console.log(newUser);
           if (response != null && response.data != null) {
