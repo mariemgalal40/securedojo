@@ -248,7 +248,7 @@ app.post(
     failureRedirect: "/public/authFail.html",
   })
 );
-
+var type = "";
 app.post(
   "/public/locallogin",
   [
@@ -256,8 +256,10 @@ app.post(
     function (req, res, next) {
       let passportObj;
       if (req.body.choice === "student") {
+        type = "student";
         passportObj = auth.getPassportusers();
       } else if (req.body.choice === "instructor") {
+        type = "instructor";
         passportObj = auth.getPassportinstructors();
       } else {
         return next(new Error("Invalid choice value"));
@@ -272,7 +274,8 @@ app.post(
     if (req.body.choice == "instructor") {
       res.redirect("/instructor");
     } else {
-      if (username == "admin") {
+      if (username == "admin" && req.user.id == 1) {
+        console.log(req.body.choice);
         console.log("admin");
         res.redirect("/admin");
       } else {
@@ -381,11 +384,21 @@ app.get("/main", (req, res) => {
 });
 
 app.get("/admin", (req, res) => {
-  if (req.user.accountId.substring("Local_".length) != "admin") {
-    res.redirect("/main");
+  console.log(type);
+  if (type == "instructor") {
+    res.redirect("/instructor");
   } else {
-    let updatedadminHtml = auth.addCsrfToken(req, adminHtml);
-    res.send(updatedadminHtml);
+    if (
+      req.user.accountId.substring("Local_".length) != "admin" ||
+      req.user.id != 1
+    ) {
+      console.log(req.user.id);
+      res.redirect("/main");
+    } else {
+      console.log(req.user.id);
+      let updatedadminHtml = auth.addCsrfToken(req, adminHtml);
+      res.send(updatedadminHtml);
+    }
   }
 });
 
