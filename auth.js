@@ -198,7 +198,7 @@ let registerLocalUser = function (req, res) {
 
   var localUser = { givenName: givenName, familyName: familyName };
   var choice = newUser.choice;
-  createUpdateUser(req, res, username, localUser, password, code, choice);
+  createUpdateUser(req, res, username, localUser, password, choice);
 };
 
 let registerinstructor = function (req, res) {
@@ -277,7 +277,7 @@ let registerinstructor = function (req, res) {
     username,
     localinstructor,
     password,
-    code,
+
     choice
   );
 };
@@ -286,7 +286,7 @@ let createUpdateUserInternal = (
   username,
   localUser,
   password,
-  code,
+
   choice
 ) => {
   //create user
@@ -294,7 +294,6 @@ let createUpdateUserInternal = (
   localUser.passHash = util.hashPassword(password, localUser.passSalt);
 
   localUsers[username] = localUser;
-  localUser.code = code;
   localUser.choice = choice;
   //save to disk
   var json = JSON.stringify(localUsers, null, "\t");
@@ -332,7 +331,6 @@ let createUpdateUser = function (
   username,
   localUser,
   password,
-  code,
   choice
 ) {
   var isStrongPass =
@@ -348,7 +346,7 @@ let createUpdateUser = function (
     );
   }
 
-  createUpdateUserInternal(username, localUser, password, code, choice);
+  createUpdateUserInternal(username, localUser, password, choice);
 
   return util.apiResponse(req, res, 200, "User created/modified.");
 };
@@ -359,7 +357,7 @@ let createUpdateinstructor = function (
   username,
   localinstructor,
   password,
-  code,
+
   choice
 ) {
   var isStrongPass =
@@ -378,7 +376,7 @@ let createUpdateinstructor = function (
     username,
     localinstructor,
     password,
-    code,
+    
     choice
   );
   return util.apiResponse(req, res, 200, "User created/modified.");
@@ -501,7 +499,7 @@ let updateLocalUser = function (req, res) {
     );
   }
 
-  createUpdateUser(req, res, username, localUser, newPassword, code, choice);
+  createUpdateUser(req, res, username, localUser, newPassword, choice);
 };
 
 let updateLocalinstructor = function (req, res) {
