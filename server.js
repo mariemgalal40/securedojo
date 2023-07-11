@@ -78,9 +78,23 @@ app.use(auth.getPassportinstructors().initialize());
 app.use(auth.getPassportinstructors().session());
 app.use(auth.getPassportusers().initialize());
 app.use(auth.getPassportusers().session());
-
 app.use(auth.authenticationByDefault);
 app.use(auth.addSecurityHeaders);
+const checkcwe = function (req, res, next) {
+  let url = req.url.toLowerCase();
+  if (
+    url.includes("cwe") &&
+    url.includes("lessons") &&
+    req.user.id != 1
+  ) {
+    res.status(403).send("not allowed");
+  } else {
+    next();
+  }
+};
+
+// Use checkcwe middleware for every request
+app.use(checkcwe);
 app.use(
   "/public/jquery",
   express.static(path.join(__dirname, "node_modules/jquery"))

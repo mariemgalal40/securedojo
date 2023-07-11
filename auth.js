@@ -203,83 +203,87 @@ let registerLocalUser = function (req, res) {
 
 let registerinstructor = function (req, res) {
   console.log("registerinstructor");
-  console.log(req.body);
+  console.log(req.user);
   //check if local auth is enabled
-  if (localinstructors == null) {
-    return util.apiResponse(
+  if (req.user.id == 1 && req.user.choice == "student") {
+    if (localinstructors == null) {
+      return util.apiResponse(
+        req,
+        res,
+        400,
+        "Local authentication is not enabled"
+      );
+    }
+
+    var newUser = req.body.newUser;
+
+    if (util.isNullOrUndefined(newUser)) {
+      return util.apiResponse(
+        req,
+        res,
+        400,
+        "Invalid request.'newUser' not defined."
+      );
+    }
+    var username = newUser.username;
+    if (
+      util.isNullOrUndefined(username) ||
+      validator.isAlphanumeric(username, "en-US") === false
+    ) {
+      return util.apiResponse(req, res, 400, "Invalid username.");
+    }
+
+    if (username in localinstructors) {
+      return util.apiResponse(req, res, 400, "Invalid username.");
+    }
+
+    var password = newUser.password;
+
+    if (util.isNullOrUndefined(password)) {
+      return util.apiResponse(
+        req,
+        res,
+        400,
+        "Invalid request. 'password' not defined."
+      );
+    }
+
+    var givenName = newUser.givenName;
+    if (
+      util.isNullOrUndefined(givenName) ||
+      validator.matches(givenName, /^[A-Z'\-\s]+$/i) === false
+    ) {
+      return util.apiResponse(req, res, 400, "Invalid givenName.");
+    }
+    var familyName = newUser.familyName;
+    if (
+      util.isNullOrUndefined(familyName) ||
+      validator.matches(familyName, /^[A-Z'\-\s]+$/i) === false
+    ) {
+      return util.apiResponse(req, res, 400, "Invalid familyName.");
+    }
+    var code = newUser.code;
+    if (
+      util.isNullOrUndefined(code) ||
+      validator.matches(code, /^[A-Z'\-\s]+$/i) === false
+    ) {
+      return util.apiResponse(req, res, 400, "Invalid code.");
+    }
+
+    var localinstructor = { givenName: givenName, familyName: familyName };
+    var choice = newUser.choice;
+    createUpdateinstructor(
       req,
       res,
-      400,
-      "Local authentication is not enabled"
+      username,
+      localinstructor,
+      password,
+      choice,
+      code
     );
+  } else {
+    res.status(403).send("not allowed");
   }
-
-  var newUser = req.body.newUser;
-
-  if (util.isNullOrUndefined(newUser)) {
-    return util.apiResponse(
-      req,
-      res,
-      400,
-      "Invalid request.'newUser' not defined."
-    );
-  }
-  var username = newUser.username;
-  if (
-    util.isNullOrUndefined(username) ||
-    validator.isAlphanumeric(username, "en-US") === false
-  ) {
-    return util.apiResponse(req, res, 400, "Invalid username.");
-  }
-
-  if (username in localinstructors) {
-    return util.apiResponse(req, res, 400, "Invalid username.");
-  }
-
-  var password = newUser.password;
-
-  if (util.isNullOrUndefined(password)) {
-    return util.apiResponse(
-      req,
-      res,
-      400,
-      "Invalid request. 'password' not defined."
-    );
-  }
-
-  var givenName = newUser.givenName;
-  if (
-    util.isNullOrUndefined(givenName) ||
-    validator.matches(givenName, /^[A-Z'\-\s]+$/i) === false
-  ) {
-    return util.apiResponse(req, res, 400, "Invalid givenName.");
-  }
-  var familyName = newUser.familyName;
-  if (
-    util.isNullOrUndefined(familyName) ||
-    validator.matches(familyName, /^[A-Z'\-\s]+$/i) === false
-  ) {
-    return util.apiResponse(req, res, 400, "Invalid familyName.");
-  }
-  var code = newUser.code;
-  if (
-    util.isNullOrUndefined(code) ||
-    validator.matches(code, /^[A-Z'\-\s]+$/i) === false
-  ) {
-    return util.apiResponse(req, res, 400, "Invalid code.");
-  }
-
-  var localinstructor = { givenName: givenName, familyName: familyName };
-  var choice = newUser.choice;
-  createUpdateinstructor(
-    req,
-    res,
-    username,
-    localinstructor,
-    password,
-    choice,
-    code
-  );
 };
 
 let createUpdateUserInternal = (
@@ -322,7 +326,7 @@ let createUpdateinstructorInternal = (
   localinstructors[username] = localinstructor;
   localinstructor.choice = choice;
   localinstructor.code = code;
-  
+
   //save to disk
   var json = JSON.stringify(localinstructors, null, "\t");
   fs.writeFileSync(localinstructorsPath, json, "utf8");
@@ -651,7 +655,7 @@ let processAuthCallback = async (
             givenName: givenName,
             choice: choice,
             code: code,
-            
+
             teamId: teamId,
             level: 0,
           };
@@ -708,7 +712,7 @@ let processAuthCallback = async (
             givenName: givenName,
             choice: choice,
             code: code,
-            
+
             teamId: teamId,
             level: 0,
           };
@@ -740,7 +744,7 @@ let getLocalStrategy = function (verifyPasswordFunction, x) {
         user.familyName,
         user.choice,
         user.code,
-        
+
         x,
         null,
         cb
