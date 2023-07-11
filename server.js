@@ -82,11 +82,7 @@ app.use(auth.authenticationByDefault);
 app.use(auth.addSecurityHeaders);
 const checkcwe = function (req, res, next) {
   let url = req.url.toLowerCase();
-  if (
-    url.includes("cwe") &&
-    url.includes("lessons") &&
-    req.user.id != 1
-  ) {
+  if (url.includes("cwe") && url.includes("lessons") && req.user.id != 1) {
     res.status(403).send("not allowed");
   } else {
     next();
@@ -326,7 +322,8 @@ app.post("/selectedchallenges", function (req, res) {
   console.log(selectedUser);
   var selectedchallengess = req.body.data;
   console.log(selectedchallengess);
-  auth.disabledsolutions(selectedUser, selectedchallengess);
+  var instruc = req.user;
+  auth.disabledsolutions(instruc, selectedUser, selectedchallengess);
 });
 
 var y = "";

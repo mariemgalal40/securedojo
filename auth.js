@@ -1056,14 +1056,20 @@ let addSecurityHeaders = function (req, res, next) {
   next();
 };
 
-let disabledsolutions = function (selectedUser, selectedchallenges) {
-  for (let key in localUsers) {
-    if (key == selectedUser) {
-      console.log(localUsers[key].givenName);
-      localUsers[key].challenges = selectedchallenges;
-      let updatedData = JSON.stringify(localUsers, null, 2);
-      fs.writeFileSync(localUsersPath, updatedData);
+let disabledsolutions = function (instruc, selectedUser, selectedchallenges) {
+  console.log("disabledsolutions");
+  console.log(instruc);
+  if (instruc.choice == "instructor") {
+    for (let key in localUsers) {
+      if (key == selectedUser) {
+        console.log(localUsers[key].givenName);
+        localUsers[key].challenges = selectedchallenges;
+        let updatedData = JSON.stringify(localUsers, null, 2);
+        fs.writeFileSync(localUsersPath, updatedData);
+      }
     }
+  } else {
+    res.status(403).send("not allowed");
   }
 };
 
